@@ -1,5 +1,6 @@
 ---
+virtualbox_apt_state: present
+virtualbox_apt_package_name: virtualbox-7.2
 virtualbox_apt_repo_key_src: oracle-virtualbox-2016.gpg
 virtualbox_apt_repo_key_dst: /usr/share/keyrings/oracle-virtualbox-2016.gpg
 virtualbox_apt_repo_template: virtualbox.list.j2
-virtualbox_apt_package_name: virtualbox-7.2

@@ -1,0 +1,20 @@
+# remove
+- name: Remove repo key {{ virtualbox_apt_repo_key_dst }}
+  become: true
+  ansible.builtin.file:
+    state: absent
+    path: "{{ virtualbox_apt_repo_key_dst }}"
+
+# remove
+- name: Remove repo file /etc/apt/sources.list.d/{{ virtualbox_apt_repo_template.replace('.j2', '') }}
+  become: true
+  ansible.builtin.file:
+    state: absent
+    path: "/etc/apt/sources.list.d/{{ virtualbox_apt_repo_template.replace('.j2', '') }}"
+
+# install
+- name: Remove {{ virtualbox_apt_package_name }}
+  become: true
+  ansible.builtin.apt:
+    state: absent
+    name: "{{ virtualbox_apt_package_name }}"

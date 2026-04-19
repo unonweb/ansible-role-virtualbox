@@ -4,45 +4,11 @@
   - virtualbox
   block:
 
-  # mkdir
-  - name: Make sure directory for key exists {{ virtualbox_apt_repo_key_dst | dirname }}
-    become: true
-    ansible.builtin.file:
-      path: "{{ virtualbox_apt_repo_key_dst | dirname }}"
-      mode: u=rwx,g=rx,o=rx
-      state: directory
-      
-  # repo key
-  - name: Copy repo key to {{ virtualbox_apt_repo_key_dst }}
-    become: true
-    ansible.builtin.copy:
-      src: "{{ virtualbox_apt_repo_key_src }}"
-      dest: "{{ virtualbox_apt_repo_key_dst }}"
-      owner: root
-      group: root
-      mode: u=rw,g=r,o=r
+  # present
+  - when: virtualbox_apt_state == "present"
+    ansible.builtin.import_tasks: ./apt_state_present.yml
 
-  # template repo file
-  - name: Template repo file to /etc/apt/sources.list.d/{{ virtualbox_apt_repo_template.replace('.j2', '') }}
-    become: true
-    ansible.builtin.template:
-      src: "{{ virtualbox_apt_repo_template }}"
-      dest: "/etc/apt/sources.list.d/{{ virtualbox_apt_repo_template.replace('.j2', '') }}"
-      owner: root
-      group: root
-      mode: u=rw,g=r,o=r
-    register: __virtualbox_repo
-  
-  # apt-update
-  - when: __virtualbox_repo.changed
-    name: Update apt cache
-    become: true
-    ansible.builtin.apt:
-      update_cache: true
-  
-  # install
-  - name: Install {{ virtualbox_apt_package_name }}
-    become: true
-    ansible.builtin.apt:
-      state: present
-      name: "{{ virtualbox_apt_package_name }}"
+  # absent
+  - when: virtualbox_apt_state == "absent"
+    ansible.builtin.import_tasks: ./apt_state_absent.yml
+      
