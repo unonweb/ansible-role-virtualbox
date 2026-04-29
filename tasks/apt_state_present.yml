@@ -40,3 +40,15 @@
   ansible.builtin.apt:
     state: present
     name: "{{ virtualbox_apt_package_name }}"
+
+# virtualbox_users
+- when: virtualbox_users | length > 0
+  name: Add {{ virtualbox_users }} to group vboxusers
+  become: true
+  loop: "{{ virtualbox_users }}"
+  loop_control:
+    loop_var: __virtualbox_user
+  ansible.builtin.user:
+    name: "{{ __virtualbox_user }}"
+    append: true
+    groups: [vboxusers]

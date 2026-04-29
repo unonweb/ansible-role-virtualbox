@@ -1,4 +1,5 @@
 ---
+virtualbox_users: []
 virtualbox_apt_state: present
 virtualbox_apt_package_name: virtualbox-7.2
 virtualbox_apt_repo_template: virtualbox.list.j2
